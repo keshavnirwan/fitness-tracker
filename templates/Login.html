@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.WebsiteTitle}}</title>
+    <link rel="stylesheet" href="/resources/css/login_style.css">
+    <script src="/resources/js/security.js" defer></script>
+</head>
+<body>
+    <div class="login-container">
+        <h1>{{.H1Heading}}</h1>
+        <p>{{.BodyParagraphText}}</p>
+
+        {{if .PostResponseMessage}}
+        <div class="alert-message">
+            {{.PostResponseMessage}}
+        </div>
+        {{end}}
+
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p class="register-link">Don't have an account? <a href="/register">Sign up here</a></p>
+    </div>
+</body>
+</html>

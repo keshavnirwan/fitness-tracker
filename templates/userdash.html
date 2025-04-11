@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        h1, h2, h3 {
+            color: #00ffcc;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        input, select, textarea {
+            background-color: #2c2c2c;
+            color: #ffffff;
+        }
+
+        button {
+            background-color: #00b894;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #00997a;
+        }
+
+        .stats-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .stats-box li {
+            margin: 8px 0;
+            padding: 8px;
+            background-color: #2e2e2e;
+            border-left: 4px solid #00b894;
+        }
+
+        .logout {
+            text-align: right;
+        }
+
+        .logout a {
+            color: #ff7675;
+            text-decoration: none;
+        }
+
+        .logout a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logout">
+            <a href="/logout">Logout</a>
+        </div>
+
+        <h1>{{.WelcomeMessage}}</h1>
+
+        <div class="section stats-box">
+            <h2>Today's Summary</h2>
+            <ul>
+                <li>Calories Consumed: 1800 kcal</li>
+                <li>Workouts Done: 2</li>
+                <li>Weight: 72 kg</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Log a Meal</h2>
+            <form action="/log-meal" method="POST">
+                <input type="text" name="meal" placeholder="E.g. Chicken Salad" required>
+                <input type="number" name="calories" placeholder="Calories" required>
+                <button type="submit">Add Meal</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Workout Tracker</h2>
+            <form action="/log-workout" method="POST">
+                <select name="type" required>
+                    <option value="">Select Workout Type</option>
+                    <option value="cardio">Cardio</option>
+                    <option value="strength">Strength</option>
+                    <option value="yoga">Yoga</option>
+                </select>
+                <input type="text" name="duration" placeholder="Duration (e.g. 30 mins)" required>
+                <textarea name="notes" placeholder="Workout notes..."></textarea>
+                <button type="submit">Log Workout</button>
+            </form>
+        </div>
+
+        <div class="section chat-section">
+            <h2>Chat with Coach</h2>
+            <textarea placeholder="Ask your coach something..." rows="3"></textarea>
+            <button>Send Message</button>
+        </div>
+    </div>
+</body>
+</html>
