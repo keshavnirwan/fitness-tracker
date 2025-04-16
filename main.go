@@ -23,6 +23,13 @@ func main() {
 	http.HandleFunc("/register", handlers.RegisterHandler)
 	http.HandleFunc("/home", handlers.HomePageHandler)
 	http.HandleFunc("/logout", handlers.LogoutHandler)
+	http.HandleFunc("/userinfo", handlers.UserInfoHandler)
+	http.HandleFunc("/userdash", handlers.UserDashHandler)
+	http.HandleFunc("/weight", handlers.WeightHandler)
+	http.HandleFunc("/cardio", handlers.CardioHandler)
+	http.HandleFunc("/update-progress", handlers.UpdateProgressHandler)
+	http.HandleFunc("/coachdash", handlers.HandleConnections)
+	go handlers.HandleMessages()
 
 	// Start server
 	fmt.Println("✅ Server running at http://localhost:8080")

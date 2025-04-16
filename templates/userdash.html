@@ -1,131 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>User Dashboard</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #1e1e1e;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-        }
-
-        h1, h2, h3 {
-            color: #00ffcc;
-        }
-
-        .section {
-            margin-bottom: 30px;
-        }
-
-        input, select, textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 8px;
-            margin-bottom: 10px;
-            border: none;
-            border-radius: 4px;
-        }
-
-        input, select, textarea {
-            background-color: #2c2c2c;
-            color: #ffffff;
-        }
-
-        button {
-            background-color: #00b894;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background-color: #00997a;
-        }
-
-        .stats-box ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .stats-box li {
-            margin: 8px 0;
-            padding: 8px;
-            background-color: #2e2e2e;
-            border-left: 4px solid #00b894;
-        }
-
-        .logout {
-            text-align: right;
-        }
-
-        .logout a {
-            color: #ff7675;
-            text-decoration: none;
-        }
-
-        .logout a:hover {
-            text-decoration: underline;
-        }
-
-    </style>
+  <meta charset="UTF-8">
+  <title>{{.WebsiteTitle}}</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .dashboard {
+      width: 92%;
+      padding: 40px 60px;
+      background-color: #1e1e1e;
+      margin: 0 auto;
+    }
+    h2, h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .userinfo p {
+      font-size: 1.1em;
+      margin: 8px 0;
+    }
+    .goal-buttons {
+      text-align: center;
+    }
+    .goal-buttons button {
+    background-color: #007bff;
+    color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      margin: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+    .goal-buttons button:hover {
+      transform: scale(1.05);
+      color: #3825e7;
+    }
+    .features ul {
+      padding-left: 20px;
+    }
+    .logout {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .logout a {
+      background-color: #007bff;
+      color: white;
+    }
+    .logout a:hover {
+      text-decoration: underline;
+    }
+    .success-message {
+      text-align: center;
+      color: lightgreen;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .toggle-wrapper {
+      text-align: right;
+      margin-bottom: 15px;
+    }
+    .toggle-wrapper label {
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    .progress-tracker {
+      margin: 20px 0;
+      padding: 10px;
+      background-color: #222;
+      border-radius: 10px;
+    }
+    .progress-tracker li {
+      list-style: none;
+      margin: 10px 0;
+    }
+    .chat-container {
+      margin-top: 30px;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .chat-box {
+      height: 200px;
+      overflow-y: auto;
+      background: #111;
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .chat-box p {
+      margin: 5px 0;
+      color: #e0e0e0;
+    }
+    .chat-inputs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    input[type="text"] {
+      padding: 10px;
+      border: 1px solid #444;
+      background-color: #1e1e1e;
+      color: #f5f5f5;
+      border-radius: 5px;
+    }
+    #receiver {
+      width: 200px;
+    }
+    #msgInput {
+      flex: 1;
+      min-width: 200px;
+    }
+    button {
+      padding: 10px 16px;
+      background-color: #b482d4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #9f6ec2;
+    }
+    @media (max-width: 600px) {
+      .goal-buttons button,
+      .chat-inputs {
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+    body.dark {
+      background-color: #f5f5f5;
+      color: #111;
+    }
+    body.dark .dashboard {
+      background-color: #e0e0e0;
+      color: #111;
+    }
+    body.dark .goal-buttons button {
+      background-color: #673ab7;
+    }
+    body.dark .logout a {
+      color: #673ab7;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logout">
-            <a href="/logout">Logout</a>
-        </div>
-
-        <h1>{{.WelcomeMessage}}</h1>
-
-        <div class="section stats-box">
-            <h2>Today's Summary</h2>
-            <ul>
-                <li>Calories Consumed: 1800 kcal</li>
-                <li>Workouts Done: 2</li>
-                <li>Weight: 72 kg</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Log a Meal</h2>
-            <form action="/log-meal" method="POST">
-                <input type="text" name="meal" placeholder="E.g. Chicken Salad" required>
-                <input type="number" name="calories" placeholder="Calories" required>
-                <button type="submit">Add Meal</button>
-            </form>
-        </div>
-
-        <div class="section">
-            <h2>Workout Tracker</h2>
-            <form action="/log-workout" method="POST">
-                <select name="type" required>
-                    <option value="">Select Workout Type</option>
-                    <option value="cardio">Cardio</option>
-                    <option value="strength">Strength</option>
-                    <option value="yoga">Yoga</option>
-                </select>
-                <input type="text" name="duration" placeholder="Duration (e.g. 30 mins)" required>
-                <textarea name="notes" placeholder="Workout notes..."></textarea>
-                <button type="submit">Log Workout</button>
-            </form>
-        </div>
-
-        <div class="section chat-section">
-            <h2>Chat with Coach</h2>
-            <textarea placeholder="Ask your coach something..." rows="3"></textarea>
-            <button>Send Message</button>
-        </div>
+  <div class="dashboard">
+    <div class="toggle-wrapper">
+      <label>
+        <input type="checkbox" id="darkToggle"> Toggle Light Mode
+      </label>
     </div>
+
+    <h2>Welcome, {{.Username}}!</h2>
+    {{if .Message}}
+      <div class="success-message">{{.Message}}</div>
+    {{end}}
+
+    <div class="userinfo">
+      <h3>Your Profile</h3>
+      <p><strong>Full Name:</strong> {{.FullName}}</p>
+      <p><strong>Age:</strong> {{.Age}}</p>
+      <p><strong>Gender:</strong> {{.Gender}}</p>
+      <p><strong>Height:</strong> {{.HeightCM}} cm</p>
+      <p><strong>Weight:</strong> {{.WeightKG}} kg</p>
+    </div>
+
+    <div class="goal-buttons">
+      <h3>Choose Your Goal</h3>
+      <button onclick="location.href='/weight'">Weight Training</button>
+      <button onclick="location.href='/cardio'">Cardio Training</button>
+    </div>
+
+    <div class="progress-tracker">
+      <h3>Daily Progress</h3>
+      <ul>
+        <li><input type="checkbox" id="workout"> Workout Completed</li>
+        <li><input type="checkbox" id="meals"> Meals Logged</li>
+        <li><input type="checkbox" id="water"> Drank 2L Water</li>
+      </ul>
+    </div>
+
+    <div class="features">
+      <h4>Next Features Coming Up</h4>
+      <ul>
+        <li>📋 Meal Logging</li>
+        <li>🏋️ Workout Tracker</li>
+        <li>📈 Progress Stats</li>
+        <li>💬 Chat with Coach</li>
+      </ul>
+    </div>
+
+    <div class="chat-container">
+      <h3>💬 Chat with Coach</h3>
+      <div id="chatBox" class="chat-box"></div>
+      <div class="chat-inputs">
+        <input type="text" id="receiver" placeholder="Coach username..." />
+        <input type="text" id="msgInput" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <div class="logout">
+      <button onclick="location.href='/logout'">Logout</button>
+    </div>
+  </div>
+
+  <script>
+    // Dark mode toggle
+    document.getElementById("darkToggle").addEventListener("change", () => {
+      document.body.classList.toggle("dark");
+    });
+
+    // WebSocket chat functionality
+    const chatBox = document.getElementById("chatBox");
+const msgInput = document.getElementById("msgInput");
+const receiverInput = document.getElementById("receiver");
+
+let ws;
+
+function connectWebSocket() {
+  ws = new WebSocket("ws://localhost:8080/userdash");
+
+  ws.onopen = () => {
+    console.log("✅ Connected to WebSocket server");
+  };
+
+  ws.onmessage = function (event) {
+    try {
+      const msg = JSON.parse(event.data);
+      const p = document.createElement("p");
+      p.textContent = `From ${msg.sender || "Coach"}: ${msg.content}`;
+      chatBox.appendChild(p);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    } catch (e) {
+      console.error("Invalid message format:", event.data);
+    }
+  };
+
+  ws.onerror = function (error) {
+    console.error("WebSocket error:", error);
+  };
+
+  ws.onclose = function (event) {
+    console.warn(`⚠️ WebSocket closed: ${event.reason} (code ${event.code})`);
+    setTimeout(connectWebSocket, 3000);  // Attempt reconnect after 3 seconds
+  };
+}
+
+connectWebSocket();
+  
+
+    function sendMessage() {
+      const content = msgInput.value.trim();
+      const receiver = receiverInput.value.trim();
+      if (receiver && content) {
+        const message = { receiver: receiver, content: content };
+        ws.send(JSON.stringify(message));
+        msgInput.value = "";
+      }
+    }
+
+    msgInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    // Send progress update when checkboxes are toggled
+    function sendProgress() {
+      fetch('/update-progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `workout=${document.getElementById('workout').checked}&meals=${document.getElementById('meals').checked}&water=${document.getElementById('water').checked}`
+      });
+    }
+
+    document.querySelectorAll('.progress-tracker input').forEach(cb => {
+      cb.addEventListener('change', sendProgress);
+    });
+  </script>
 </body>
 </html>
