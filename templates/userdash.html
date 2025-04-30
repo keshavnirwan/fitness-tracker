@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>{{.WebsiteTitle}}</title>
   <style>
+    /* Base Styles */
     body {
       background-color: #111;
       color: #f5f5f5;
@@ -18,7 +19,7 @@
       background-color: #1e1e1e;
       margin: 0 auto;
     }
-    h2, h3 {
+    h2, h3, h4 {
       text-align: center;
       margin-bottom: 20px;
     }
@@ -30,8 +31,8 @@
       text-align: center;
     }
     .goal-buttons button {
-    background-color: #007bff;
-    color: white;
+      background-color: #007bff;
+      color: white;
       padding: 12px 20px;
       border: none;
       border-radius: 6px;
@@ -51,11 +52,16 @@
       text-align: center;
       margin-top: 30px;
     }
-    .logout a {
+    .logout a, .logout button {
       background-color: #007bff;
       color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
     }
-    .logout a:hover {
+    .logout a:hover, .logout button:hover {
       text-decoration: underline;
     }
     .success-message {
@@ -82,86 +88,136 @@
       list-style: none;
       margin: 10px 0;
     }
-    .chat-container {
-      margin-top: 30px;
-      background: #222;
-      padding: 20px;
-      border-radius: 10px;
+
+   /* Chat Section */
+.chat-container {
+  margin-top: 30px;
+  background: #1e1e1e;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+
+.chat-toggle {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.chat-toggle button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  margin: 5px;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.chat-toggle button:hover {
+  transform: scale(1.05);
+  background-color: #005ecb;
+}
+
+.chat-section {
+  margin-top: 20px;
+}
+
+.chat-box {
+  height: 250px;
+  overflow-y: auto;
+  background: #111;
+  padding: 12px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.chat-box p {
+  margin: 6px 0;
+  color: #e0e0e0;
+  font-size: 0.95em;
+}
+
+.chat-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.chat-inputs input[type="text"] {
+  padding: 10px 12px;
+  border: 1px solid #444;
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  border-radius: 6px;
+  font-size: 1em;
+}
+
+.chat-inputs button {
+  background-color: #b482d4;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s;
+}
+
+.chat-inputs button:hover {
+  background-color: #9f6ec2;
+}
+
+/* Responsive Chat Input */
+@media (max-width: 600px) {
+  .chat-inputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .chat-inputs input, .chat-inputs button {
+    width: 100%;
+  }
+}
+
+/* Light Mode Support */
+body.dark .chat-container {
+  background-color: #e0e0e0;
+}
+
+body.dark .chat-box {
+  background-color: #fff;
+  color: #111;
+  border: 1px solid #ccc;
+}
+
+body.dark .chat-inputs input[type="text"] {
+  background-color: #f5f5f5;
+  color: #111;
+  border: 1px solid #aaa;
+}
+
+    body.dark .logout a,
+    body.dark .logout button {
+      color: #071385;
     }
-    .chat-box {
-      height: 200px;
-      overflow-y: auto;
-      background: #111;
-      padding: 10px;
-      border: 1px solid #444;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      text-align: left;
+    body.dark .chat-toggle button {
+      background-color: #0f027e;
     }
-    .chat-box p {
-      margin: 5px 0;
-      color: #e0e0e0;
-    }
-    .chat-inputs {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    input[type="text"] {
-      padding: 10px;
-      border: 1px solid #444;
-      background-color: #1e1e1e;
-      color: #f5f5f5;
-      border-radius: 5px;
-    }
-    #receiver {
-      width: 200px;
-    }
-    #msgInput {
-      flex: 1;
-      min-width: 200px;
-    }
-    button {
-      padding: 10px 16px;
-      background-color: #b482d4;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #9f6ec2;
-    }
-    @media (max-width: 600px) {
-      .goal-buttons button,
-      .chat-inputs {
-        flex-direction: column;
-        width: 100%;
-      }
-    }
-    body.dark {
-      background-color: #f5f5f5;
-      color: #111;
-    }
-    body.dark .dashboard {
-      background-color: #e0e0e0;
-      color: #111;
-    }
-    body.dark .goal-buttons button {
-      background-color: #673ab7;
-    }
-    body.dark .logout a {
-      color: #673ab7;
+
+    .logout-button {
+      background-color: #4d0404;
+      color:white;
+      
     }
   </style>
 </head>
 <body>
   <div class="dashboard">
     <div class="toggle-wrapper">
-      <label>
-        <input type="checkbox" id="darkToggle"> Toggle Light Mode
-      </label>
+      <label><input type="checkbox" id="darkToggle"> Toggle Light Mode</label>
     </div>
 
     <h2>Welcome, {{.Username}}!</h2>
@@ -203,13 +259,34 @@
       </ul>
     </div>
 
+    <!-- Updated Chat Section -->
     <div class="chat-container">
-      <h3>💬 Chat with Coach</h3>
-      <div id="chatBox" class="chat-box"></div>
-      <div class="chat-inputs">
-        <input type="text" id="receiver" placeholder="Coach username..." />
-        <input type="text" id="msgInput" placeholder="Type your message..." />
-        <button onclick="sendMessage()">Send</button>
+      <h3>💬 Chat Options</h3>
+      <div class="chat-toggle">
+        <button onclick="switchChat('coach')">Coach Chat</button>
+        <button onclick="switchChat('ai')">AI Chatbot</button>
+      </div>
+
+      <!-- Chat with Coach -->
+      <div id="coachChat" class="chat-section">
+        <h4>Chat with Coach</h4>
+        <div id="chatBox" class="chat-box"></div>
+        <div class="chat-inputs">
+          <input type="text" id="receiver" placeholder="Coach username..." />
+          <button onclick="fetchChatHistory()">Load Chat</button>
+          <input type="text" id="msgInput" placeholder="Type your message..." />
+          <button onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+
+      <!-- Chat with AI Bot -->
+      <div id="aiChat" class="chat-section" style="display:none;">
+        <h4>Chat with AI Coach 🤖</h4>
+        <div id="aiChatBox" class="chat-box"></div>
+        <div class="chat-inputs">
+          <input type="text" id="aiMsgInput" placeholder="Ask the AI Coach..." />
+          <button onclick="sendAiMessage()">Send to AI</button>
+        </div>
       </div>
     </div>
 
@@ -219,76 +296,65 @@
   </div>
 
   <script>
-    // Dark mode toggle
+    // Toggle Light/Dark Mode
     document.getElementById("darkToggle").addEventListener("change", () => {
       document.body.classList.toggle("dark");
     });
 
-    // WebSocket chat functionality
+    // Switch between chats
+    function switchChat(target) {
+      document.getElementById('coachChat').style.display = target === 'coach' ? 'block' : 'none';
+      document.getElementById('aiChat').style.display = target === 'ai' ? 'block' : 'none';
+    }
+
+    // Coach Chat (WebSocket)
     const chatBox = document.getElementById("chatBox");
-const msgInput = document.getElementById("msgInput");
-const receiverInput = document.getElementById("receiver");
+    const msgInput = document.getElementById("msgInput");
+    const receiverInput = document.getElementById("receiver");
+    let ws = new WebSocket("ws://localhost:8080/ws");
 
-let ws;
-
-function connectWebSocket() {
-  ws = new WebSocket("ws://localhost:8080/userdash");
-
-  ws.onopen = () => {
-    console.log("✅ Connected to WebSocket server");
-  };
-
-  ws.onmessage = function (event) {
-    try {
+    ws.onmessage = function (event) {
       const msg = JSON.parse(event.data);
       const p = document.createElement("p");
-      p.textContent = `From ${msg.sender || "Coach"}: ${msg.content}`;
+      p.textContent = `From ${msg.sender}: ${msg.content}`;
       chatBox.appendChild(p);
       chatBox.scrollTop = chatBox.scrollHeight;
-    } catch (e) {
-      console.error("Invalid message format:", event.data);
+    };
+
+    async function fetchChatHistory() {
+      const receiver = receiverInput.value.trim();
+      if (!receiver) {
+        alert("Please enter the coach's username.");
+        return;
+      }
+      try {
+        const response = await fetch(`/chat-history?receiver=${receiver}`);
+        if (!response.ok) throw new Error("Failed to fetch chat history");
+        const messages = await response.json();
+        chatBox.innerHTML = "";
+        if (!messages.length) {
+          chatBox.innerHTML = "<p>No messages found.</p>";
+          return;
+        }
+        messages.forEach(msg => {
+          const p = document.createElement("p");
+          p.textContent = `${msg.Sender}: ${msg.Content} (${msg.Time})`;
+          chatBox.appendChild(p);
+        });
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
-  };
-
-  ws.onerror = function (error) {
-    console.error("WebSocket error:", error);
-  };
-
-  ws.onclose = function (event) {
-    console.warn(`⚠️ WebSocket closed: ${event.reason} (code ${event.code})`);
-    setTimeout(connectWebSocket, 3000);  // Attempt reconnect after 3 seconds
-  };
-}
-
-connectWebSocket();
-  
 
     function sendMessage() {
       const content = msgInput.value.trim();
       const receiver = receiverInput.value.trim();
       if (receiver && content) {
-        const message = { receiver: receiver, content: content };
-        ws.send(JSON.stringify(message));
+        ws.send(JSON.stringify({ receiver, content }));
         msgInput.value = "";
       }
-    }
-
-    msgInput.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") sendMessage();
-    });
-
-    // Send progress update when checkboxes are toggled
-    function sendProgress() {
-      fetch('/update-progress', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `workout=${document.getElementById('workout').checked}&meals=${document.getElementById('meals').checked}&water=${document.getElementById('water').checked}`
-      });
-    }
-
-    document.querySelectorAll('.progress-tracker input').forEach(cb => {
-      cb.addEventListener('change', sendProgress);
-    });
+    } 
   </script>
 </body>
 </html>

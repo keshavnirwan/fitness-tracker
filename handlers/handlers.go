@@ -2,12 +2,13 @@ package handlers
 
 import (
 	"crypto/rand"
-
 	"encoding/hex"
+	"encoding/json"
 	"fitnesscoach/db"
 	"fmt"
 	"log"
 	"net/http"
+
 	"strconv"
 	"text/template"
 
@@ -175,6 +176,23 @@ func UserInfoHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/userdash?updated=true", http.StatusSeeOther)
 }
 
+func GetAllUserInfoHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	users, err := db.GetAllUserInfo()
+	if err != nil {
+		log.Println("❌ Failed to fetch user info:", err)
+		http.Error(w, "Failed to fetch user info", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(users)
+}
+
 func UserDashHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "fitnesscoach.com")
 	isAuthenticated, ok := session.Values["authenticatedUser"].(bool)
@@ -207,6 +225,22 @@ func UserDashHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	templateRenderMap(w, data, "userdash")
+}
+
+// CoachChatHandler serves the coachchat.html template
+func CoachChatHandler(w http.ResponseWriter, r *http.Request) {
+	// Parse the template
+	tmpl, err := template.ParseFiles("templates/coachchat.html")
+	if err != nil {
+		http.Error(w, "Error loading template", http.StatusInternalServerError)
+		return
+	}
+
+	// Render the template
+	err = tmpl.Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+	}
 }
 
 func WeightHandler(w http.ResponseWriter, r *http.Request) {
@@ -265,8 +299,117 @@ func UpdateProgressHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// WebSocket Chat Implementation
+// CohereHandler handles requests to the Cohere chatbot
+// func CohereHandler(w http.ResponseWriter, r *http.Request) {
+// 	if r.Method != http.MethodPost {
+// 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+// 		return
+// 	}
 
+// 	// Parse the request body
+// 	var requestData struct {
+// 		Question string `json:"question"`
+// 	}
+// 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
+// 		log.Println("❌ Failed to decode request body:", err)
+// 		http.Error(w, "Invalid request body", http.StatusBadRequest)
+// 		return
+// 	}
+
+// // CohereHandler handles requests to the Cohere chatbot
+// func CohereHandler(w http.ResponseWriter, r *http.Request) {
+//     if r.Method != http.MethodPost {
+//         http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+//         return
+//     }
+
+//     // Parse the request body
+//     var requestData struct {
+//         Question string `json:"question"`
+//     }
+//     if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
+//         log.Println("❌ Failed to decode request body:", err)
+//         http.Error(w, "Invalid request body", http.StatusBadRequest)
+//         return
+//     }
+
+//     // Get Cohere API key from environment variables
+// 	apiKey := os.Getenv("COHERE_API_KEY")
+//     if apiKey == "" {
+//         log.Println("❌ Cohere API key not set")
+//         http.Error(w, "Cohere API key not set", http.StatusInternalServerError)
+//         return
+//     }
+
+//     // Prepare the request payload for Cohere
+//     payload := map[string]interface{}{
+//         "model":       "command-xlarge-nightly",
+//         "prompt":      requestData.Question,
+//         "max_tokens":  550,
+//         "temperature": 0.7,
+//     }
+//     payloadBytes, err := json.Marshal(payload)
+//     if err != nil {
+//         log.Println("❌ Failed to marshal payload:", err)
+//         http.Error(w, "Failed to process request", http.StatusInternalServerError)
+//         return
+//     }
+
+//     // Send the request to Cohere's API
+//     req, err := http.NewRequest("POST", "https://api.cohere.ai/generate", bytes.NewBuffer(payloadBytes))
+//     if err != nil {
+//         log.Println("❌ Failed to create request:", err)
+//         http.Error(w, "Failed to process request", http.StatusInternalServerError)
+//         return
+//     }
+//     req.Header.Set("Authorization", "Bearer "+apiKey)
+//     req.Header.Set("Content-Type", "application/json")
+
+//     client := &http.Client{}
+//     resp, err := client.Do(req)
+//     if err != nil {
+//         log.Println("❌ Failed to communicate with Cohere:", err)
+//         http.Error(w, "Failed to communicate with Cohere", http.StatusInternalServerError)
+//         return
+//     }
+//     defer resp.Body.Close()
+
+//     if resp.StatusCode != http.StatusOK {
+//         log.Printf("❌ Cohere API error: %s", resp.Status)
+//         http.Error(w, fmt.Sprintf("Cohere API error: %s", resp.Status), http.StatusInternalServerError)
+//         return
+//     }
+
+//     // Parse the response from Cohere
+//     var cohereResponse struct {
+//         Generations []struct {
+//             Text string `json:"text"`
+//         } `json:"generations"`
+//     }
+//     if err := json.NewDecoder(resp.Body).Decode(&cohereResponse); err != nil {
+//         log.Println("❌ Failed to decode Cohere response:", err)
+//         http.Error(w, "Failed to process Cohere response", http.StatusInternalServerError)
+//         return
+//     }
+
+//     if len(cohereResponse.Generations) == 0 {
+//         log.Println("❌ No response from Cohere")
+//         http.Error(w, "No response from Cohere", http.StatusInternalServerError)
+//         return
+//     }
+
+//     // Extract the response text
+//     chatbotResponse := cohereResponse.Generations[0].Text
+//     log.Println("✅ Cohere response:", chatbotResponse)
+
+//     // Send the response back to the frontend
+//     w.Header().Set("Content-Type", "application/json")
+//     json.NewEncoder(w).Encode(map[string]string{
+//         "answer": chatbotResponse,
+//     })
+// }
+
+// WebSocket Chat Implementation
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
 		return true
@@ -277,12 +420,14 @@ var clients = make(map[string]*websocket.Conn)     // username -> connection
 var connections = make(map[*websocket.Conn]string) // connection -> username
 var broadcast = make(chan Message)
 
+// Message structure for WebSocket communication
 type Message struct {
 	Sender   string `json:"sender"`
 	Receiver string `json:"receiver"`
 	Content  string `json:"content"`
 }
 
+// HandleConnections handles WebSocket connections for both coach and user
 func HandleConnections(w http.ResponseWriter, r *http.Request) {
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -290,6 +435,7 @@ func HandleConnections(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Retrieve username from session
 	session, _ := store.Get(r, "fitnesscoach.com")
 	username, ok := session.Values["username"].(string)
 	if !ok || username == "" {
@@ -298,6 +444,7 @@ func HandleConnections(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Register the connection
 	clients[username] = ws
 	connections[ws] = username
 	defer func() {
@@ -306,6 +453,7 @@ func HandleConnections(w http.ResponseWriter, r *http.Request) {
 		ws.Close()
 	}()
 
+	// Listen for incoming messages
 	for {
 		var msg Message
 		err := ws.ReadJSON(&msg)
@@ -313,26 +461,83 @@ func HandleConnections(w http.ResponseWriter, r *http.Request) {
 			log.Printf("WebSocket read error: %v", err)
 			break
 		}
-		msg.Sender = username
-		broadcast <- msg
+		msg.Sender = username // Set the sender to the current user
+		broadcast <- msg      // Send the message to the broadcast channel
 	}
 }
 
+// HandleMessages handles broadcasting messages to specific users
 func HandleMessages() {
 	for {
 		msg := <-broadcast
-		receiverConn, ok := clients[msg.Receiver]
-		if ok {
-			err := receiverConn.WriteJSON(msg)
-			if err != nil {
+
+		// Get sender and receiver IDs
+		senderID, err1 := db.GetUserIDByUsername(msg.Sender)
+		receiverID, err2 := db.GetUserIDByUsername(msg.Receiver)
+
+		if err1 != nil || err2 != nil {
+			log.Printf("❌ Failed to get user IDs: %v, %v", err1, err2)
+			continue
+		}
+
+		// Save message to the database
+		err := db.SendMessage(senderID, receiverID, msg.Content)
+		if err != nil {
+			log.Printf("❌ Failed to save message: %v", err)
+		} else {
+			log.Printf("💬 Message saved to DB: %s -> %s", msg.Sender, msg.Receiver)
+		}
+
+		// Deliver message to the receiver if online
+		if receiverConn, ok := clients[msg.Receiver]; ok {
+			if err := receiverConn.WriteJSON(msg); err != nil {
 				log.Printf("WebSocket write error: %v", err)
 				receiverConn.Close()
 				delete(clients, msg.Receiver)
 			}
 		} else {
-			log.Printf("User %s is not connected", msg.Receiver)
+			log.Printf("📭 %s is not connected", msg.Receiver)
 		}
 	}
+}
+func ChatHistoryHandler(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "fitnesscoach.com")
+	currentUsername := session.Values["username"].(string)
+
+	senderID, err := db.GetUserIDByUsername(currentUsername)
+	if err != nil {
+		log.Printf("❌ Invalid sender: %v", err)
+		http.Error(w, "Invalid sender", http.StatusBadRequest)
+		return
+	}
+
+	receiver := r.URL.Query().Get("receiver")
+	if receiver == "" {
+		log.Println("❌ Receiver username is missing")
+		http.Error(w, "Receiver username is required", http.StatusBadRequest)
+		return
+	}
+
+	receiverID, err := db.GetUserIDByUsername(receiver)
+	if err != nil {
+		log.Printf("❌ Invalid receiver: %v", err)
+		http.Error(w, "Invalid receiver", http.StatusBadRequest)
+		return
+	}
+
+	log.Printf("🔍 Fetching messages between senderID: %d and receiverID: %d", senderID, receiverID)
+
+	messages, err := db.GetMessagesBetweenUsers(senderID, receiverID)
+	if err != nil {
+		log.Printf("❌ Failed to fetch chat history: %v", err)
+		http.Error(w, "Failed to fetch chat history", http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("✅ Messages fetched: %v", messages)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(messages)
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {

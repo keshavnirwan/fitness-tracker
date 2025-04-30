@@ -2,8 +2,13 @@ package db
 
 import (
 	"database/sql"
+	"errors"
+	"time"
+
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var db *sql.DB
@@ -20,9 +25,14 @@ func InitDB() error {
 }
 
 // CreateUser inserts a new user into the person table
-func CreateUser(username, email, passwordHash, role string) (int64, error) {
+func CreateUser(username, email, password, role string) (int64, error) {
+	hashedPassword, err := HashPassword(password)
+	if err != nil {
+		return 0, err
+	}
+
 	query := `INSERT INTO person (username, email, password_hash, role) VALUES (?, ?, ?, ?)`
-	result, err := db.Exec(query, username, email, passwordHash, role)
+	result, err := db.Exec(query, username, email, hashedPassword, role)
 	if err != nil {
 		return 0, err
 	}
@@ -46,22 +56,19 @@ func SaveUserInfoByID(userID int64, fullName string, age int, gender string, hei
 			age = VALUES(age),
 			gender = VALUES(gender),
 			height_cm = VALUES(height_cm),
-			weight_kg = VALUES(weight_kg)
-	`
+			weight_kg = VALUES(weight_kg)`
 	_, err := db.Exec(query, userID, fullName, age, gender, height, weight)
 	return err
 }
 
 // SaveUserInfo inserts or updates personal info using username
 func SaveUserInfo(username string, fullName string, age int, gender string, height, weight float64) error {
-	// Get user ID from username
 	var userID int
 	err := db.QueryRow("SELECT id FROM person WHERE username = ?", username).Scan(&userID)
 	if err != nil {
 		return err
 	}
 
-	// Check if user_info entry exists for this user
 	var exists bool
 	err = db.QueryRow("SELECT EXISTS(SELECT 1 FROM user_info WHERE user_id = ?)", userID).Scan(&exists)
 	if err != nil {
@@ -69,16 +76,22 @@ func SaveUserInfo(username string, fullName string, age int, gender string, heig
 	}
 
 	if exists {
-		// Update
 		_, err = db.Exec(`UPDATE user_info SET full_name=?, age=?, gender=?, height_cm=?, weight_kg=? WHERE user_id=?`,
 			fullName, age, gender, height, weight, userID)
 	} else {
-		// Insert
 		_, err = db.Exec(`INSERT INTO user_info (user_id, full_name, age, gender, height_cm, weight_kg) VALUES (?, ?, ?, ?, ?, ?)`,
 			userID, fullName, age, gender, height, weight)
 	}
-
 	return err
+}
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
+}
+
+func CheckPasswordHash(password, hash string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 }
 
 // ValidateUser checks if the username/password is valid
@@ -92,8 +105,11 @@ func ValidateUser(username, password string) (bool, string, error) {
 		return false, "", err
 	}
 
-	if storedPassword != password {
-		return false, "", nil
+	if err := CheckPasswordHash(password, storedPassword); err != nil {
+		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			return false, "", nil
+		}
+		return false, "", err
 	}
 
 	return true, role, nil
@@ -114,14 +130,41 @@ func GetUserInfoByUsername(username string) (*UserInfo, error) {
 		SELECT ui.full_name, ui.age, ui.gender, ui.height_cm, ui.weight_kg
 		FROM user_info ui
 		JOIN person p ON ui.user_id = p.id
-		WHERE p.username = ?
-	`
+		WHERE p.username = ?`
+
 	var info UserInfo
 	err := db.QueryRow(query, username).Scan(&info.FullName, &info.Age, &info.Gender, &info.Height, &info.Weight)
 	if err != nil {
 		return nil, err
 	}
 	return &info, nil
+}
+
+// GetAllUserInfo fetches all user information from the user_info table
+func GetAllUserInfo() ([]UserInfo, error) {
+	query := `
+        SELECT full_name, age, gender, height_cm, weight_kg
+        FROM user_info
+    `
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Printf("❌ Query error: %v", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []UserInfo
+	for rows.Next() {
+		var user UserInfo
+		err := rows.Scan(&user.FullName, &user.Age, &user.Gender, &user.Height, &user.Weight)
+		if err != nil {
+			log.Printf("❌ Row scan error: %v", err)
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	log.Printf("✅ Users fetched: %v", users)
+	return users, nil
 }
 
 // SaveOrUpdateProgress inserts or updates daily progress
@@ -132,8 +175,7 @@ func SaveOrUpdateProgress(userID int64, workout, meals, water bool) error {
 	ON DUPLICATE KEY UPDATE 
 		workout_done = VALUES(workout_done),
 		meals_logged = VALUES(meals_logged),
-		water_done = VALUES(water_done)
-	`
+		water_done = VALUES(water_done)`
 	_, err := db.Exec(query, userID, workout, meals, water)
 	return err
 }
@@ -144,27 +186,67 @@ func GetTodayProgress(userID int64) (bool, bool, bool, error) {
 	query := `SELECT workout_done, meals_logged, water_done FROM user_progress WHERE user_id = ? AND date = CURDATE()`
 	err := db.QueryRow(query, userID).Scan(&workout, &meals, &water)
 	if err == sql.ErrNoRows {
-		return false, false, false, nil // No progress yet
+		return false, false, false, nil
 	}
 	if err != nil {
 		return false, false, false, err
 	}
 	return workout, meals, water, nil
 }
+
+// GetUserIDByUsername returns a user's ID based on username
 func GetUserIDByUsername(username string) (int64, error) {
 	var id int64
 	err := db.QueryRow("SELECT id FROM person WHERE username = ?", username).Scan(&id)
 	return id, err
 }
 
+// SendMessage stores a chat message in the database
 func SendMessage(senderID, receiverID int64, content string) error {
-	query := `INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?)`
-	_, err := db.Exec(query, senderID, receiverID, content)
+	query := `INSERT INTO messages (sender_id, receiver_id, message, timestamp) VALUES (?, ?, ?, ?)`
+	_, err := db.Exec(query, senderID, receiverID, content, time.Now())
 	return err
 }
 
+// Message represents a chat message
 type Message struct {
 	Sender  string
 	Content string
 	Time    string
+}
+
+// GetMessagesBetweenUsers retrieves chat history between two users
+func GetMessagesBetweenUsers(senderID, receiverID int64) ([]Message, error) {
+	query := `
+        SELECT p.username, m.message, CAST(m.timestamp AS CHAR)
+        FROM messages m
+        JOIN person p ON m.sender_id = p.id
+        WHERE (m.sender_id = ? AND m.receiver_id = ?) OR (m.sender_id = ? AND m.receiver_id = ?)
+        ORDER BY m.timestamp ASC
+    `
+
+	log.Printf("🔍 Executing query with senderID: %d, receiverID: %d", senderID, receiverID)
+
+	rows, err := db.Query(query, senderID, receiverID, receiverID, senderID)
+	if err != nil {
+		log.Printf("❌ Query error: %v", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var messages []Message
+	for rows.Next() {
+		var msg Message
+		var timestamp string
+		err := rows.Scan(&msg.Sender, &msg.Content, &timestamp)
+		if err != nil {
+			log.Printf("❌ Row scan error: %v", err)
+			return nil, err
+		}
+		msg.Time = timestamp
+		messages = append(messages, msg)
+	}
+
+	log.Printf("✅ Messages retrieved: %v", messages)
+	return messages, nil
 }
