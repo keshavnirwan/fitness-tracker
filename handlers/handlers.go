@@ -471,22 +471,6 @@ func ChatHistoryHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(messages)
 }
 
-func LogoutHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "fitnesscoach.com")
-	session.Options.MaxAge = -1
-	session.Save(r, w)
-	http.Redirect(w, r, "/login", http.StatusSeeOther)
-}
-
-func generateRandomString(length int) string {
-	bytes := make([]byte, length)
-	_, err := rand.Read(bytes)
-	if err != nil {
-		return "fallbacksecret"
-	}
-	return hex.EncodeToString(bytes)
-}
-
 const cohereAPIKey = "aflWffC10AK0waH2h7KkeMXkRoR8Igj8Y2ofiGKw"
 const cohereURL = "https://api.cohere.ai/v1/generate"
 
@@ -547,4 +531,20 @@ func AiChatHandler(w http.ResponseWriter, r *http.Request) {
 			"Response": cohereResp.Generations[0].Text,
 		})
 	}
+}
+
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "fitnesscoach.com")
+	session.Options.MaxAge = -1
+	session.Save(r, w)
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
+}
+
+func generateRandomString(length int) string {
+	bytes := make([]byte, length)
+	_, err := rand.Read(bytes)
+	if err != nil {
+		return "fallbacksecret"
+	}
+	return hex.EncodeToString(bytes)
 }

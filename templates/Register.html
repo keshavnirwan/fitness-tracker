@@ -20,7 +20,7 @@
         </div>
         {{end}}
 
-        <form action="/register" method="POST">
+        <form action="/register" method="POST" onsubmit="hashPasswordAndSubmit(event)">
             <div class="input-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -51,5 +51,7 @@
 
         <p class="register-link">Already have an account? <a href="/login">Login here</a></p>
     </div>
+
+   
 </body>
 </html>

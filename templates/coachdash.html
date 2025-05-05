@@ -5,78 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{{.WebsiteTitle}}</title>
   <style>
-
-    
-    /* General Styles */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f9f9f9;
       color: #333;
     }
+
     .navbar {
-  background-color: #2c3e50;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar h1 {
-  margin: 0;
-  font-size: 24px;
-  color: #ffffff;
-}
-
-.nav-links {
-  display: flex;
-  gap: 15px;
-}
-
-.nav-links button {
-  padding: 10px 20px;
-  font-size: 1em;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.nav-links .btn-back {
-  background-color: #3498db;
-  color: white;
-}
-
-.nav-links .btn-back:hover {
-  background-color: #2980b9;
-}
-
-.nav-links .btn-logout {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.nav-links .btn-logout:hover {
-  background-color: #c0392b;
-}  
-    header {
       background-color: #2c3e50;
-      padding: 30px 20px;
-      text-align: center;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-  
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-links button {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links .btn-logout {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .nav-links .btn-logout:hover {
+      background-color: #c0392b;
+    }
+
     header h1 {
       margin: 0;
       font-size: 2.5em;
       color: #ffffff;
     }
-  
+
     main {
       padding: 40px 20px;
     }
-  
+
     .dashboard {
       background-color: white;
       padding: 30px;
@@ -85,22 +68,21 @@
       margin: auto;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-  
+
     .dashboard h2 {
       margin-bottom: 20px;
       color: #2c3e50;
       font-size: 1.8em;
       text-align: center;
     }
-  
+
     .dashboard p {
       font-size: 1em;
       color: #555;
       line-height: 1.6;
       text-align: center;
     }
-  
-    /* Filters Section */
+
     .filters {
       display: flex;
       gap: 15px;
@@ -108,7 +90,7 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-  
+
     .filters input,
     .filters select {
       padding: 10px;
@@ -117,8 +99,7 @@
       min-width: 150px;
       font-size: 1em;
     }
-  
-    /* User List */
+
     .user-list {
       display: flex;
       flex-wrap: wrap;
@@ -126,97 +107,78 @@
       justify-content: center;
     }
 
-
     .user-block {
-  background-color: #2c3e50; /* Same background color as the navbar */
-  color: white; /* White text color */
-  width: 200px; /* Reduced width */
-  min-height: 100px; /* Reduced height */
-  padding: 10px; /* Reduced padding */
-  border-radius: 8px; /* Slightly smaller border radius */
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  box-sizing: border-box;
-  border: 1px solid #2c3e50; /* Match border with background */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.user-block:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.user-name {
-  
-  font-weight: bold;
-  font-size: 1.2em; /* Increased font size */
-  margin-bottom: 8px;
-  color: white; /* White text for the user name */
-  text-align: center; /* Center the name */
-}
-
-.user-details {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-  font-size: 0.8em; /* Reduced font size */
-  text-align: left;
-  margin-top: 8px; /* Reduced margin */
-  color: white; /* White text for details */
-}
-
-.user-block.expanded .user-details {
-  max-height: 200px; /* Reduced max height */
-}
-
-.user-details p {
-  margin: 4px 0; /* Reduced margin */
-  color: white; /* Ensure paragraph text is white */
-}
-
-button {
-  padding: 10px 16px;
-  background-color: #1abc9c; /* Green button */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  margin-top: 10px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-button:hover {
-  background-color: #16a085;
-  transform: translateY(-3px);
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-    .logout {
-      display: inline-block;
-      margin-top: 40px;
-      padding: 12px 24px;
-      background-color: #dc3545;
+      background-color: #2c3e50;
       color: white;
-      border-radius: 6px;
-      text-decoration: none;
+      width: 200px;
+      min-height: 100px;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      box-sizing: border-box;
+      border: 1px solid #2c3e50;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-block:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .user-name {
       font-weight: bold;
-      transition: background-color 0.3s ease;
+      font-size: 1.2em;
+      margin-bottom: 8px;
+      color: white;
+      text-align: center;
     }
-  
-    .logout:hover {
-      background-color: #c82333;
+
+    .user-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      font-size: 0.8em;
+      text-align: left;
+      margin-top: 8px;
+      color: white;
     }
-  
-    /* Footer */
+
+    .user-block.expanded .user-details {
+      max-height: 200px;
+    }
+
+    .user-details p {
+      margin: 4px 0;
+      color: white;
+    }
+
+    button {
+      padding: 10px 16px;
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #16a085;
+      transform: translateY(-3px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
     footer {
       background-color: #2c3e50;
       padding: 20px;
@@ -225,22 +187,21 @@ button:active {
       color: white;
       font-size: 0.9em;
     }
-  
+
     footer a {
       color: #1abc9c;
       text-decoration: none;
     }
-  
+
     footer a:hover {
       text-decoration: underline;
     }
-  
-    /* Responsive Design */
+
     @media (max-width: 768px) {
       .user-block {
         width: 100%;
       }
-  
+
       .filters {
         flex-direction: column;
         align-items: center;
@@ -250,17 +211,16 @@ button:active {
 </head>
 <body>
   <header class="navbar">
-    <h1>Welcome Coach </h1>
+    <h1>Welcome Coach</h1>
     <div class="nav-links"> 
       <button class="btn-logout" onclick="location.href='/logout'">Logout</button>
     </div>
   </header>
+
   <main>
     <section class="dashboard">
       <h2>{{.WelcomeMessage}}</h2>
-      <p style="margin-bottom: 30px;">
-        Welcome to your Coach Dashboard. View and manage your members below.
-      </p>
+      <p>Welcome to your Coach Dashboard. View and manage your members below.</p>
 
       <div class="filters">
         <input type="text" id="searchInput" placeholder="Search by name..." oninput="filterUsers()" />
@@ -278,11 +238,7 @@ button:active {
       </div>
 
       <div class="user-list" id="userList"></div>
-
-       
-
     </section>
-    
   </main>
 
   <footer>
@@ -292,64 +248,68 @@ button:active {
   <script>
     let users = [];
 
-    async function fetchAllUserInfo() {
-      try {
-        const response = await fetch("/all-user-info");
-        if (!response.ok) throw new Error("Failed to fetch user info");
-        users = await response.json();
-        renderUsers(users);
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    }
+async function fetchAllUserInfo() {
+  try {
+    const response = await fetch("/all-user-info");
+    if (!response.ok) throw new Error("Failed to fetch user info");
+    users = await response.json();
+    renderUsers(users);
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+  }
+}
 
-    function renderUsers(userArray) {
-      const userList = document.getElementById("userList");
-      userList.innerHTML = '';
+function renderUsers(userArray) {
+  const userList = document.getElementById("userList");
+  userList.innerHTML = '';
 
-      userArray.forEach((user, index) => {
-        const block = document.createElement("div");
-        block.className = "user-block";
-        block.innerHTML = `
-          <div class="user-name">${user.FullName}</div>
-          <div class="user-details">
-            <p><strong>Age:</strong> ${user.Age}</p>
-            <p><strong>Gender:</strong> ${user.Gender}</p>
-            <p><strong>Height:</strong> ${user.Height} cm</p>
-            <p><strong>Weight:</strong> ${user.Weight} kg</p>
-            <button onclick="redirectToChat('${encodeURIComponent(user.FullName)}')">Chat</button>
-          </div>
-        `;
-        block.onclick = () => block.classList.toggle("expanded");
-        userList.appendChild(block);
-      });
-    }
+  // Only render users that are NOT coaches
+  const membersOnly = userArray.filter(user => !user.isCoach); // or user.Role !== 'Coach'
 
-    function filterUsers() {
-      const nameSearch = document.getElementById("searchInput").value.toLowerCase();
-      const gender = document.getElementById("genderFilter").value;
-      const ageGroup = document.getElementById("ageFilter").value;
+  membersOnly.forEach((user) => {
+    const block = document.createElement("div");
+    block.className = "user-block";
+    block.innerHTML = `
+      <div class="user-name">${user.FullName}</div>
+      <div class="user-details">
+        <p><strong>Age:</strong> ${user.Age}</p>
+        <p><strong>Gender:</strong> ${user.Gender}</p>
+        <p><strong>Height:</strong> ${user.Height} cm</p>
+        <p><strong>Weight:</strong> ${user.Weight} kg</p>
+        <button onclick="redirectToChat('${encodeURIComponent(user.FullName)}')">Chat</button>
+      </div>
+    `;
+    block.onclick = () => block.classList.toggle("expanded");
+    userList.appendChild(block);
+  });
+}
 
-      const filtered = users.filter(user => {
-        const matchesName = user.FullName.toLowerCase().includes(nameSearch);
-        const matchesGender = gender ? user.Gender.toLowerCase() === gender.toLowerCase() : true;
-        const matchesAge =
-          ageGroup === "under18" ? user.Age < 18 :
-          ageGroup === "18to40" ? user.Age >= 18 && user.Age <= 40 :
-          ageGroup === "above40" ? user.Age > 40 :
-          true;
-        return matchesName && matchesGender && matchesAge;
-      });
 
-      renderUsers(filtered);
-    }
+function filterUsers() {
+  const nameSearch = document.getElementById("searchInput").value.toLowerCase();
+  const gender = document.getElementById("genderFilter").value;
+  const ageGroup = document.getElementById("ageFilter").value;
 
-    function redirectToChat(fullName) {
-      const chatUrl = `/coachchat?user=${fullName}`;
-      window.location.href = chatUrl;
-    }
+  const filtered = users.filter(user => {
+    const matchesName = user.FullName.toLowerCase().includes(nameSearch);
+    const matchesGender = gender ? user.Gender.toLowerCase() === gender.toLowerCase() : true;
+    const matchesAge =
+      ageGroup === "under18" ? user.Age < 18 :
+      ageGroup === "18to40" ? user.Age >= 18 && user.Age <= 40 :
+      ageGroup === "above40" ? user.Age > 40 :
+      true;
+    return matchesName && matchesGender && matchesAge;
+  });
 
-    window.onload = fetchAllUserInfo;
-   </script>
+  renderUsers(filtered);
+}
+
+function redirectToChat(fullName) {
+  const chatUrl = `/coachchat?user=${fullName}`;
+  window.location.href = chatUrl;
+}
+
+window.onload = fetchAllUserInfo;
+  </script>
 </body>
 </html>
