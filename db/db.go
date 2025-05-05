@@ -3,9 +3,9 @@ package db
 import (
 	"database/sql"
 	"errors"
-	"time"
 
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
@@ -178,20 +178,6 @@ func SaveOrUpdateProgress(userID int64, workout, meals, water bool) error {
 		water_done = VALUES(water_done)`
 	_, err := db.Exec(query, userID, workout, meals, water)
 	return err
-}
-
-// GetTodayProgress retrieves today's progress
-func GetTodayProgress(userID int64) (bool, bool, bool, error) {
-	var workout, meals, water bool
-	query := `SELECT workout_done, meals_logged, water_done FROM user_progress WHERE user_id = ? AND date = CURDATE()`
-	err := db.QueryRow(query, userID).Scan(&workout, &meals, &water)
-	if err == sql.ErrNoRows {
-		return false, false, false, nil
-	}
-	if err != nil {
-		return false, false, false, err
-	}
-	return workout, meals, water, nil
 }
 
 // GetUserIDByUsername returns a user's ID based on username

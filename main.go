@@ -24,6 +24,7 @@ func main() {
 	// Serve static files (CSS, JS, etc.)
 	fs := http.FileServer(http.Dir("resources"))
 	http.Handle("/resources/", http.StripPrefix("/resources/", fs))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	// Routes
 	http.HandleFunc("/login", handlers.LoginHandler)
@@ -34,14 +35,15 @@ func main() {
 	http.HandleFunc("/userdash", handlers.UserDashHandler)
 	http.HandleFunc("/weight", handlers.WeightHandler)
 	http.HandleFunc("/cardio", handlers.CardioHandler)
-	http.HandleFunc("/update-progress", handlers.UpdateProgressHandler)
 	http.HandleFunc("/coachdash", handlers.HandleConnections)
 	http.HandleFunc("/coachchat", handlers.CoachChatHandler)
 	http.HandleFunc("/ws", handlers.HandleConnections)
 	go handlers.HandleMessages()
+	http.HandleFunc("/update-profile", handlers.UpdateProfilePageHandler)
 	http.HandleFunc("/all-user-info", handlers.GetAllUserInfoHandler)
 	http.HandleFunc("/chat-history", handlers.ChatHistoryHandler)
-	// Start server
+	http.HandleFunc("/ai-chat", handlers.AiChatHandler)
+
 	fmt.Println("✅ Server running at http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

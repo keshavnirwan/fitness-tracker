@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Update Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f8;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+  background-color: #2c3e50;
+  color: white;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 1em;
+  border-radius: 5px;
+  padding: 8px 15px;
+  transition: background 0.3s;
+}
+.nav-links a:hover {
+  background: #1abc9c;
+  color: white;
+}
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"], select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+
+    button {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color:  #2c3e50;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 1em;
+       
+    }
+
+    button:hover {
+      background-color: #2c6161;
+    }
+
+    
+
+    .success-message {
+      text-align: center;
+      color: green;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .error-message {
+      text-align: center;
+      color: red;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
+      <h1 style="margin:0;font-size:1.5em;">Update Profile</h1>
+      <div class="nav-links">
+        <a href="/userdash">Dashboard</a>
+        <a href="/logout">Logout</a>
+      </div>
+    </div>
+    <div class="container">
+       
+    <h1>Update Profile</h1>
+    <form id="updateProfileForm">
+      <label for="fullName">Full Name:</label>
+      <input type="text" id="fullName" name="fullName" required />
+
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" required />
+
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="height">Height (cm):</label>
+      <input type="number" id="height" name="height" step="0.1" required />
+
+      <label for="weight">Weight (kg):</label>
+      <input type="number" id="weight" name="weight" step="0.1" required />
+
+      <button type="submit">Update Profile</button>
+    </form>
+    <div id="message"></div>
+
+    
+  </div>
+  <script>
+    const form = document.getElementById("updateProfileForm");
+    const messageDiv = document.getElementById("message");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      // Convert height and weight to numbers
+      data.height = parseFloat(data.height);
+      data.weight = parseFloat(data.weight);
+      data.age = parseInt(data.age, 10);
+
+      try {
+        const response = await fetch("/update-profile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          messageDiv.innerHTML = `<p class="success-message">${result.message}</p>`;
+        } else {
+          messageDiv.innerHTML = `<p class="error-message">${result.error}</p>`;
+        }
+      } catch (error) {
+        messageDiv.innerHTML = `<p class="error-message">An error occurred. Please try again later.</p>`;
+      }
+    });
+  </script>
+</body>
+</html>

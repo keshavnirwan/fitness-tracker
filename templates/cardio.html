@@ -2,90 +2,218 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cardio Training</title>
   <style>
+    /* General Styles */
     body {
-      background-color: #111;
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
     }
+    .navbar {
+  background-color: #2c3e50;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.navbar h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-links button {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.nav-links .btn-back {
+  background-color: #3498db;
+  color: white;
+}
+
+.nav-links .btn-back:hover {
+  background-color: #2980b9;
+}
+
+.nav-links .btn-logout {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.nav-links .btn-logout:hover {
+  background-color: #c0392b;
+}
     h1 {
       text-align: center;
-      margin-bottom: 30px;
-      color: #ff6b6b;
+      color: #2c3e50;
+      margin: 20px 0;
+      font-size: 2.5em;
+      font-weight: bold;
     }
-
+  
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+  
+    /* Section Styling */
+    .section {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+  
+    .section h2 {
+      margin-bottom: 15px;
+      font-size: 1.8em;
+      color: #34495e;
+    }
+  
+    .section p {
+      font-size: 1em;
+      color: #555;
+      line-height: 1.6;
+    }
+  
+    /* Accordion Buttons */
     .accordion {
-      background-color: #1e1e1e;
+      background-color: #1abc9c;
       color: white;
       cursor: pointer;
-      padding: 18px;
+      padding: 15px;
       width: 100%;
+      border: none;
       text-align: left;
       outline: none;
-      font-size: 18px;
-      transition: 0.4s;
-      border: none;
-      margin-top: 10px;
-    }
-
-    .active, .accordion:hover {
-      background-color: #444;
-    }
-
-    .panel {
-      padding: 0 18px;
-      display: none;
-      background-color: #292929;
-      overflow: hidden;
-      border-bottom: 1px solid #444;
-    }
-
-    .panel img {
-      width: 100%;
-      max-width: 400px;
-      margin: 15px 0;
-      border-radius: 8px;
-    }
-
-    .timer-section {
-      margin-top: 40px;
-      text-align: center;
-    }
-
-    .timer-section button {
-      padding: 10px 20px;
-      font-size: 16px;
-      margin-top: 10px;
-      background-color: #ff6b6b;
-      border: none;
-      color: white;
+      font-size: 1.2em;
+      transition: background-color 0.3s ease;
       border-radius: 5px;
-      cursor: pointer;
+      margin-bottom: 10px;
     }
-
-    .timer-section #timerDisplay {
-      font-size: 24px;
-      margin-top: 15px;
+  
+    .accordion:hover {
+      background-color: #16a085;
     }
-
-    .back-link {
-      margin-top: 40px;
+  
+    .active, .accordion:focus {
+      background-color: #16a085;
+    }
+  
+    /* Panel Styling */
+    .panel {
+      padding: 0 15px;
+      display: none;
+      background-color: #f9f9f9;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+  
+    .panel img {
+      width: 25%;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+  
+    .panel p {
+      font-size: 1em;
+      color: #555;
+    }
+  
+    /* Timer Section */
+    .timer-section {
       text-align: center;
+      margin-top: 30px;
+      background-color: #2c3e50;
+      padding: 20px;
+      border-radius: 8px;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-
+  
+    .timer-section h2 {
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+  
+    .timer-section button {
+      background-color: #1abc9c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+  
+    .timer-section button:hover {
+      background-color: #16a085;
+    }
+  
+    #timerDisplay {
+      font-size: 2.5em;
+      margin: 15px 0;
+      font-weight: bold;
+    }
+  
+    /* Back Link */
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+  
     .back-link a {
-      color: #61dafb;
       text-decoration: none;
+      color: #1abc9c;
+      font-size: 1.1em;
+      transition: color 0.3s ease;
     }
+  
+    .back-link a:hover {
+      color: #16a085;
+    }
+  
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .panel img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  
   </style>
 </head>
 <body>
 
-  <h1>🏃 Cardio Training</h1>
+  <header class="navbar">
+    <h1>Cardio Training</h1>
+    <div class="nav-links">
+      <button class="btn-back" onclick="location.href='/userdash'">Back to Dashboard</button>
+      <button class="btn-logout" onclick="location.href='/logout'">Logout</button>
+    </div>
+  </header>
 
   <button class="accordion">Running</button>
   <div class="panel">
@@ -123,11 +251,7 @@
     <div id="timerDisplay">Ready</div>
     <audio id="beepSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
   </div>
-
-  <div class="back-link">
-    <a href="/userdash">← Back to Dashboard</a>
-  </div>
-
+   
   <script>
     const acc = document.getElementsByClassName("accordion");
     for (let i = 0; i < acc.length; i++) {
@@ -160,6 +284,7 @@
         }
       }, 1000);
     }
+     
   </script>
 
 </body>

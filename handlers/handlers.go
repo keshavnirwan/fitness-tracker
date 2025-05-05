@@ -1,14 +1,16 @@
 package handlers
 
 import (
+	"bytes"
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
 	"fitnesscoach/db"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
-
 	"strconv"
 	"text/template"
 
@@ -271,32 +273,71 @@ func CardioHandler(w http.ResponseWriter, r *http.Request) {
 	templateRenderMap(w, data, "cardio")
 }
 
-func UpdateProgressHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
-	username := session.Values["username"].(string)
+func UpdateProfilePageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		tmpl, err := template.ParseFiles("templates/update-profile.html")
+		if err != nil {
+			http.Error(w, "Failed to load page", http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, nil)
+	} else if r.Method == http.MethodPost {
+		UpdateProfileHandler(w, r)
+	} else {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+	}
+}
+func UpdateProfileHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
 
-	userID, err := db.GetUserIDByUsername(username)
+	var profileData struct {
+		FullName string  `json:"fullName"`
+		Age      int     `json:"age"`
+		Gender   string  `json:"gender"`
+		Height   float64 `json:"height"`
+		Weight   float64 `json:"weight"`
+	}
+
+	// Read the request body
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, "User not found", http.StatusInternalServerError)
+		log.Printf("Error reading request body: %v", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	if err := r.ParseForm(); err != nil {
-		http.Error(w, "Invalid form", http.StatusBadRequest)
-		return
-	}
+	// Log the raw request body for debugging
+	log.Printf("Raw Request Body: %s", body)
 
-	workout := r.FormValue("workout") == "true"
-	meals := r.FormValue("meals") == "true"
-	water := r.FormValue("water") == "true"
-
-	err = db.SaveOrUpdateProgress(userID, workout, meals, water)
+	// Decode the JSON into the struct
+	err = json.Unmarshal(body, &profileData)
 	if err != nil {
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		log.Printf("Error unmarshaling JSON: %v", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	// Log the decoded profile data
+	log.Printf("Decoded Profile Data: %+v", profileData)
+
+	session, _ := store.Get(r, "fitnesscoach.com")
+	username, ok := session.Values["username"].(string)
+	if !ok || username == "" {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	err = db.SaveUserInfo(username, profileData.FullName, profileData.Age, profileData.Gender, profileData.Height, profileData.Weight)
+	if err != nil {
+		http.Error(w, "Failed to update profile", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"message": "Profile updated successfully"})
 }
 
 // WebSocket Chat Implementation
@@ -444,4 +485,66 @@ func generateRandomString(length int) string {
 		return "fallbacksecret"
 	}
 	return hex.EncodeToString(bytes)
+}
+
+const cohereAPIKey = "aflWffC10AK0waH2h7KkeMXkRoR8Igj8Y2ofiGKw"
+const cohereURL = "https://api.cohere.ai/v1/generate"
+
+type CohereRequest struct {
+	Model       string  `json:"model"`
+	Prompt      string  `json:"prompt"`
+	MaxTokens   int     `json:"max_tokens"`
+	Temperature float64 `json:"temperature"`
+}
+
+type CohereResponse struct {
+	Generations []struct {
+		Text string `json:"text"`
+	} `json:"generations"`
+}
+
+func AiChatHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		tmpl := template.Must(template.ParseFiles("templates/chat.html"))
+		tmpl.Execute(w, nil)
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		r.ParseForm()
+		prompt := r.FormValue("prompt")
+
+		reqBody := CohereRequest{
+			Model:       "command", // Or "command-nightly"
+			Prompt:      prompt,
+			MaxTokens:   100,
+			Temperature: 0.7,
+		}
+		body, _ := json.Marshal(reqBody)
+
+		req, err := http.NewRequest("POST", cohereURL, bytes.NewBuffer(body))
+		if err != nil {
+			http.Error(w, "Failed to create request", http.StatusInternalServerError)
+			return
+		}
+		req.Header.Set("Authorization", "Bearer "+cohereAPIKey)
+		req.Header.Set("Content-Type", "application/json")
+
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			http.Error(w, "Cohere API request failed", http.StatusInternalServerError)
+			return
+		}
+		defer resp.Body.Close()
+
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		var cohereResp CohereResponse
+		json.Unmarshal(respBody, &cohereResp)
+
+		tmpl := template.Must(template.ParseFiles("templates/chat.html"))
+		tmpl.Execute(w, map[string]string{
+			"Response": cohereResp.Generations[0].Text,
+		})
+	}
 }

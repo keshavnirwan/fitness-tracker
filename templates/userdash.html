@@ -4,310 +4,644 @@
   <meta charset="UTF-8">
   <title>{{.WebsiteTitle}}</title>
   <style>
-    /* Base Styles */
-    body {
-      background-color: #111;
-      color: #f5f5f5;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .dashboard {
-      width: 92%;
-      padding: 40px 60px;
-      background-color: #1e1e1e;
-      margin: 0 auto;
-    }
-    h2, h3, h4 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .userinfo p {
-      font-size: 1.1em;
-      margin: 8px 0;
-    }
-    .goal-buttons {
-      text-align: center;
-    }
-    .goal-buttons button {
-      background-color: #007bff;
+
+      /* Footer */
+      footer {
+      background-color: #2c3e50;
       color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1em;
-      margin: 10px;
-      cursor: pointer;
-      transition: transform 0.2s, background-color 0.3s;
-    }
-    .goal-buttons button:hover {
-      transform: scale(1.05);
-      color: #3825e7;
-    }
-    .features ul {
-      padding-left: 20px;
-    }
-    .logout {
       text-align: center;
-      margin-top: 30px;
-    }
-    .logout a, .logout button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    .logout a:hover, .logout button:hover {
-      text-decoration: underline;
-    }
-    .success-message {
-      text-align: center;
-      color: lightgreen;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-    .toggle-wrapper {
-      text-align: right;
-      margin-bottom: 15px;
-    }
-    .toggle-wrapper label {
-      cursor: pointer;
+      padding: 15px;
+      margin-top: 0px;
       font-size: 0.9em;
     }
-    .progress-tracker {
-      margin: 20px 0;
-      padding: 10px;
-      background-color: #222;
-      border-radius: 10px;
+  
+    footer a {
+      color: #1abc9c;
+      text-decoration: none;
     }
-    .progress-tracker li {
-      list-style: none;
-      margin: 10px 0;
+  
+    footer a:hover {
+      text-decoration: underline;
     }
-
-   /* Chat Section */
-.chat-container {
-  margin-top: 30px;
-  background: #1e1e1e;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.5);
-}
-
-.chat-toggle {
+   
+   
+    /* General Styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    .features {
+  margin-top: 40px;
   text-align: center;
+}
+.features h4 {
+  font-size: 1.8em;
+  color: #f7f9fc;
+  margin-top: 350px;
   margin-bottom: 20px;
 }
 
-.chat-toggle button {
-  background-color: #007bff;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  margin: 5px;
-  border-radius: 6px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: transform 0.2s, background-color 0.3s;
+.feature-cards { 
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.chat-toggle button:hover {
-  transform: scale(1.05);
-  background-color: #005ecb;
-}
-
-.chat-section {
-  margin-top: 20px;
-}
-
-.chat-box {
-  height: 250px;
-  overflow-y: auto;
-  background: #111;
-  padding: 12px;
-  border: 1px solid #333;
+.feature-card {
+  background-color: #1abc9c; /* Default background color */
+  color: white; /* Text color */
+  padding: 20px;
   border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #16a085; /* Darker shade on hover */
+}
+
+.feature-card i {
+  font-size: 2.5em;
+  color: white; /* Icon color */
   margin-bottom: 15px;
 }
 
+.feature-card h5 {
+  font-size: 1.4em;
+  color: white; /* Title color */
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  font-size: 1em;
+  color: #f9f9f9; /* Lighter text color for better readability */
+}
+    .motivational-quote {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.motivational-quote h3 {
+  font-size: 1.5em;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.motivational-quote p {
+  font-size: 1.2em;
+  color: #555;
+  font-style: italic;
+}
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  
+    h1, h2, h3, h4 {
+      margin: 0;
+    }
+  
+    /* Navbar */
+    .navbar {
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    .navbar h1 {
+      font-size: 1.5em;
+    }
+  
+    .navbar .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+  
+    .navbar .nav-links a {
+      color: white;
+      font-size: 1em;
+      transition: color 0.3s;
+    }
+  
+    .navbar .nav-links a:hover {
+      color: #1abc9c;
+    }
+  
+    /* Dashboard Layout */
+    .dashboard-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+  
+    /* Sidebar */
+    .sidebar {
+  width: 260px;
+  background-color: #34495e;
+  color: white;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  min-height: 100vh;      /* Ensures sidebar stretches to full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+  
+    .sidebar h3 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+    } 
+  /* Sidebar Training Options */
+   
+  .goal-buttons {
+    margin-top: 20px; /* Add space above the Training Options section */
+  }
+
+  .goal-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    height: 70px;
+    margin-bottom: 15px;
+    padding: 12px 20px;
+    background-color: #000303;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .goal-buttons button:hover {
+    background-color:  #2c3e50;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+
+  .goal-buttons button i {
+    font-size: 1.2em;
+  }
+
+  .goal-buttons button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  } 
+  
+  .blogs {
+  margin-top: 40px;
+  margin-bottom: 40px; /* Add space below the blog section */
+  text-align: center;
+}
+.blogs h4 {
+  font-size: 1.8em;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.blog-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.blog-card {
+  background-color:  #2c3e50;  /* White background for a clean look */
+  color: #fbfbfd; /* Dark text color */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.blog-card i {
+  font-size: 2.5em;
+  color: #1abc9c; /* Icon color */
+  margin-bottom: 15px;
+}
+
+.blog-card h5 {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+.blog-card p {
+  font-size: 1em;
+  color: #f7f6f6;
+  margin-bottom: 15px;
+}
+
+ 
+.blog-button {
+  background-color: #1abc9c; /* Green button */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.blog-button:hover {
+  background-color: #16a085; /* Darker green on hover */
+  transform: translateY(-3px); /* Slight lift effect */
+}
+
+.blog-button:active {
+  transform: translateY(0); /* Reset on click */
+}
+  .progress-tracker {
+  margin-top: 20px;
+  margin-bottom: 20px; /* Add space below the progress tracker */
+  padding: 15px;
+  background-color: #2c3e50;
+  border-radius: 5px;
+  color: white;
+}
+    .progress-tracker h4 {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+  
+    .progress-tracker ul {
+      list-style: none;
+      padding: 0;
+    }
+  
+    .progress-tracker li {
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+  
+    /* Main Content */
+    .dashboard {
+      flex-grow: 1;
+      padding: 40px;
+      background-color: #f9f9f9;
+    }
+  
+    .dashboard h2 {
+      margin-bottom: 20px;
+      font-size: 2.5em;
+      color: #2c3e50;
+      text-align: center;
+    }
+  
+    .userinfo {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+  
+    .userinfo h3 {
+      margin-bottom: 15px;
+      font-size: 1.4em;
+      color: #34495e;
+    }
+  
+    .userinfo p {
+      font-size: 1em;
+      margin: 8px 0;
+      color: #555;
+    }
+  
+    .update-profile button {
+      background-color:  #2c3e50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+  
+    .update-profile button:hover {
+      background-color: #34495e;
+    }
+  
+    /* Chat Section */
+.chat-container {
+  background-color: #34495e;
+  padding: 32px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.10);
+  margin-bottom: 40px;
+  margin-top: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chat-container h3 {
+  font-size: 1.7em;
+  color: #f6f8fa;
+  margin-bottom: 18px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.chat-section h4 {
+  color: #1abc9c;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.chat-box {
+  height: 220px;
+  overflow-y: auto;
+  background-color: #f4f8fb;
+  padding: 18px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 1em;
+  color: #34495e;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.04);
+}
+
 .chat-box p {
-  margin: 6px 0;
-  color: #e0e0e0;
-  font-size: 0.95em;
+  margin: 7px 0;
+  padding: 8px 14px;
+  background: #e8f6f3;
+  border-radius: 6px;
+  font-size: 0.98em;
+  color: #2c3e50;
+  word-break: break-word;
 }
 
 .chat-inputs {
   display: flex;
+  gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
 }
 
 .chat-inputs input[type="text"] {
-  padding: 10px 12px;
-  border: 1px solid #444;
-  background-color: #1e1e1e;
-  color: #f5f5f5;
+  flex: 1 1 180px;
+  padding: 10px 14px;
+  border: 1.5px solid #ddd;
   border-radius: 6px;
   font-size: 1em;
+  transition: border-color 0.3s;
+  background: #f9f9f9;
+}
+
+.chat-inputs input[type="text"]:focus {
+  border-color: #1abc9c;
+  outline: none;
 }
 
 .chat-inputs button {
-  background-color: #b482d4;
+  background-color: #1abc9c;
   color: white;
-  padding: 10px 16px;
+  padding: 10px 20px;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
   font-size: 1em;
-  transition: background-color 0.3s;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  min-width: 90px;
 }
 
 .chat-inputs button:hover {
-  background-color: #9f6ec2;
+  background-color: #16a085;
+  transform: translateY(-2px);
 }
 
-/* Responsive Chat Input */
-@media (max-width: 600px) {
+@media (max-width: 900px) {
+  .chat-container {
+    padding: 18px 6px;
+    max-width: 98vw;
+  }
+  .chat-box {
+    padding: 10px;
+  }
   .chat-inputs {
     flex-direction: column;
-    align-items: stretch;
+    gap: 8px;
   }
-  .chat-inputs input, .chat-inputs button {
+  .chat-inputs input[type="text"], .chat-inputs button {
     width: 100%;
+    min-width: unset;
   }
 }
-
-/* Light Mode Support */
-body.dark .chat-container {
-  background-color: #e0e0e0;
-}
-
-body.dark .chat-box {
-  background-color: #fff;
-  color: #111;
-  border: 1px solid #ccc;
-}
-
-body.dark .chat-inputs input[type="text"] {
-  background-color: #f5f5f5;
-  color: #111;
-  border: 1px solid #aaa;
-}
-
-    body.dark .logout a,
-    body.dark .logout button {
-      color: #071385;
-    }
-    body.dark .chat-toggle button {
-      background-color: #0f027e;
-    }
-
-    .logout-button {
-      background-color: #4d0404;
-      color:white;
-      
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .dashboard-layout {
+        flex-direction: column;
+      }
+  
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+  
+      .chat-inputs {
+        flex-direction: column;
+      }
+  
+      .chat-inputs input[type="text"] {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="dashboard">
-    <div class="toggle-wrapper">
-      <label><input type="checkbox" id="darkToggle"> Toggle Light Mode</label>
-    </div>
-
-    <h2>Welcome, {{.Username}}!</h2>
-    {{if .Message}}
-      <div class="success-message">{{.Message}}</div>
-    {{end}}
-
-    <div class="userinfo">
-      <h3>Your Profile</h3>
-      <p><strong>Full Name:</strong> {{.FullName}}</p>
-      <p><strong>Age:</strong> {{.Age}}</p>
-      <p><strong>Gender:</strong> {{.Gender}}</p>
-      <p><strong>Height:</strong> {{.HeightCM}} cm</p>
-      <p><strong>Weight:</strong> {{.WeightKG}} kg</p>
-    </div>
-
-    <div class="goal-buttons">
-      <h3>Choose Your Goal</h3>
-      <button onclick="location.href='/weight'">Weight Training</button>
-      <button onclick="location.href='/cardio'">Cardio Training</button>
-    </div>
-
-    <div class="progress-tracker">
-      <h3>Daily Progress</h3>
-      <ul>
-        <li><input type="checkbox" id="workout"> Workout Completed</li>
-        <li><input type="checkbox" id="meals"> Meals Logged</li>
-        <li><input type="checkbox" id="water"> Drank 2L Water</li>
-      </ul>
-    </div>
-
-    <div class="features">
-      <h4>Next Features Coming Up</h4>
-      <ul>
-        <li>📋 Meal Logging</li>
-        <li>🏋️ Workout Tracker</li>
-        <li>📈 Progress Stats</li>
-        <li>💬 Chat with Coach</li>
-      </ul>
-    </div>
-
-    <!-- Updated Chat Section -->
-    <div class="chat-container">
-      <h3>💬 Chat Options</h3>
-      <div class="chat-toggle">
-        <button onclick="switchChat('coach')">Coach Chat</button>
-        <button onclick="switchChat('ai')">AI Chatbot</button>
-      </div>
-
-      <!-- Chat with Coach -->
-      <div id="coachChat" class="chat-section">
-        <h4>Chat with Coach</h4>
-        <div id="chatBox" class="chat-box"></div>
-        <div class="chat-inputs">
-          <input type="text" id="receiver" placeholder="Coach username..." />
-          <button onclick="fetchChatHistory()">Load Chat</button>
-          <input type="text" id="msgInput" placeholder="Type your message..." />
-          <button onclick="sendMessage()">Send</button>
-        </div>
-      </div>
-
-      <!-- Chat with AI Bot -->
-      <div id="aiChat" class="chat-section" style="display:none;">
-        <h4>Chat with AI Coach 🤖</h4>
-        <div id="aiChatBox" class="chat-box"></div>
-        <div class="chat-inputs">
-          <input type="text" id="aiMsgInput" placeholder="Ask the AI Coach..." />
-          <button onclick="sendAiMessage()">Send to AI</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="logout">
-      <button onclick="location.href='/logout'">Logout</button>
+  <div class="navbar">
+    <h1>Fitness Coach Dashboard</h1>
+    <div class="nav-links">  
+      <a href="/logout">Logout</a>
     </div>
   </div>
 
-  <script>
-    // Toggle Light/Dark Mode
-    document.getElementById("darkToggle").addEventListener("change", () => {
-      document.body.classList.toggle("dark");
-    });
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <div class="sidebar"> 
+      <div class="goal-buttons">
+        <button onclick="location.href='/ai-chat'">🤖 Chat with AI</button>
+       </div>
 
-    // Switch between chats
+      <div class="progress-tracker">
+        <h4>Daily Progress</h4>
+        <ul>
+          <li><input type="checkbox" id="workout"> Workout Completed</li>
+          <li><input type="checkbox" id="meals"> Meals Logged</li>
+          <li><input type="checkbox" id="water"> Drank 2L Water</li>
+        </ul>
+      </div> 
+
+<!-- Move the image BELOW the progress tracker and add a wrapper for centering and clarity -->
+<div style="display: flex; flex-direction: column; align-items: center; margin-top: 30px;">
+  <img src="/static/images/gym1.jpg"
+       alt="gym"
+       style="width: 270px; height: 190px; border-radius: 10%; object-fit: cover; box-shadow: 0 4px 16px rgba(0,0,0,0.15); border: 4px solid #fff; background: #eee;" />
+</div>
+
+<div class="features">
+  <h4>Next Features Coming Up</h4>
+  <div class="feature-cards">
+    <div class="feature-card">
+      <i class="fas fa-utensils"></i>
+      <h5>🥗Meal Logging</h5>
+      <p>Track your daily meals and maintain a healthy diet.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-chart-line"></i>
+      <h5> 📈Progress Stats</h5>
+      <p>Monitor your fitness progress and achieve your goals.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+    <!-- Main Content -->
+    <div class="dashboard"> 
+
+      <h2>Welcome, {{.Username}}!</h2>
+      {{if .Message}}
+        <div class="success-message">{{.Message}}</div>
+      {{end}} 
+
+       
+      <div class="motivational-quote">
+        <h3>Motivational Quote</h3>
+        <p id="quote">Loading...</p>
+      </div>
+
+      <div class="userinfo">
+        <h3>Your Profile</h3>
+        <p><strong>Full Name:</strong> {{.FullName}}</p>
+        <p><strong>Age:</strong> {{.Age}}</p>
+        <p><strong>Gender:</strong> {{.Gender}}</p>
+        <p><strong>Height:</strong> {{.HeightCM}} cm</p>
+        <p><strong>Weight:</strong> {{.WeightKG}} kg</p>
+
+        <!-- Update Profile Button -->
+        <div class="update-profile">
+          <button onclick="location.href='/update-profile'">Update Profile</button>
+        </div>
+      </div>
+ 
+      <!-- Blogs Section -->
+      <div class="blogs">
+        <h4>Training Blogs</h4>
+        <div class="blog-cards">
+          <!-- Weight Training Blog -->
+          <div class="blog-card">
+            <i class="fas fa-dumbbell"></i>
+            <h5>🏋️‍♂️ Weight Training Tips</h5>
+            <p>Learn how weight training can help you build muscle, improve bone density, and boost your metabolism.</p>
+            <button onclick="location.href='weight'" class="blog-button">Start Weight Training</button>
+          </div>
+      
+          <!-- Cardio Training Blog -->
+          <div class="blog-card">
+            <i class="fas fa-running"></i>
+            <h5>🏃‍♂️ Cardio Training Tips</h5>
+            <p>Discover the benefits of cardio exercises for heart health, calorie burning, and endurance improvement.</p>
+            <button onclick="location.href='cardio'" class="blog-button">Start Cardio Training</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Section -->
+<div class="chat-container">
+  <h3>💬 Chat with Coach</h3> 
+    <div id="chatBox" class="chat-box"></div>
+    <div class="chat-inputs">
+      <input type="text" id="receiver" placeholder="Coach username..." />
+      <button onclick="fetchChatHistory()">Load Chat</button>
+      <input type="text" id="msgInput" placeholder="Type your message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+<!-- not working code -->
+          <div id="aiChat" class="chat-section" style="display:none;">
+            <h4>Chat with AI Coach 🤖</h4>
+            <div id="aiChatBox" class="chat-box"></div>
+            <div class="chat-inputs">
+              <input type="text" id="aiMsgInput" placeholder="Ask the AI Coach..." />
+              <button onclick="location.href='/chat.html'">AI Chatbot</button>
+          </div>
+        </div>
+      </div>
+      <!--  -->
+
+
+  </div>
+
+
+   
+
+  <footer>
+    &copy; {{.CurrentYear}} {{.WebsiteTitle}}. All rights reserved.
+  </footer>
+
+  <script> 
+async function fetchMotivationalQuote() {
+  try {
+    // Add a timestamp to the URL to prevent caching
+    const apiUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://zenquotes.io/api/random") + "&timestamp=" + new Date().getTime();
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error("Failed to fetch quote");
+    }
+    const data = await response.json();
+    const quoteData = JSON.parse(data.contents); // Parse the JSON from the proxy response
+    const quote = quoteData[0].q; // The quote text
+    const author = quoteData[0].a; // The author
+    document.getElementById("quote").textContent = `"${quote}" - ${author}`;
+  } catch (error) {
+    console.error("Error fetching quote:", error);
+    document.getElementById("quote").textContent = "Could not load a quote. Please try again later.";
+  }
+}
+
+// Call the function to fetch the quote when the page loads
+fetchMotivationalQuote();
+
+
     function switchChat(target) {
       document.getElementById('coachChat').style.display = target === 'coach' ? 'block' : 'none';
       document.getElementById('aiChat').style.display = target === 'ai' ? 'block' : 'none';
     }
-
-    // Coach Chat (WebSocket)
+// WebSocket for Coach Chat
     const chatBox = document.getElementById("chatBox");
     const msgInput = document.getElementById("msgInput");
     const receiverInput = document.getElementById("receiver");
@@ -354,7 +688,8 @@ body.dark .chat-inputs input[type="text"] {
         ws.send(JSON.stringify({ receiver, content }));
         msgInput.value = "";
       }
-    } 
-  </script>
+    }  
+ 
+</script>
 </body>
 </html>
